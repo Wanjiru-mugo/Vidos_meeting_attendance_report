@@ -1,329 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vidos Attendance Tracker</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vidos Weekly Attendance Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* ---- Vidos brand tokens ----
-     Sourced from Vidos Identity Guidelines v1.1:
-     Dark Charcoal #152022, Dark Green #2B3D3B, Steel Blue #6d889d,
-     Muted Green #91b7ac, Soft Blue #9dbcd0, Mid Grey #727272, Light Cream #f3ece6.
-     Typeface Sharp Sans No1 isn't a web font — Manrope substitutes as the
-     nearest-available geometric sans (same weight roles: 800/700 headline,
-     600 subhead, 400 body). Status colors (good/warning/critical) stay fixed
-     per report convention, not brand-themed. */
   :root {
-    color-scheme: light;
-    --surface-1:      #fdfbf9;
-    --surface-page:   #f3ece6; /* Vidos Light Cream */
-    --text-primary:   #152022; /* Vidos Dark Charcoal */
-    --text-secondary: #3f4d4b;
-    --text-muted:     #7d8b89;
-    --gridline:       #e4dcd2;
-    --baseline:       #c9c0b2;
-    --border:         rgba(21,32,34,0.12);
-    --series-1:       #2b3d3b; /* Vidos Dark Green  - Team Coordination */
-    --series-2:       #6d889d; /* Vidos Steel Blue  - Content & Marketing */
-    --series-3:       #91b7ac; /* Vidos Muted Green - AI Training */
-    --brand-accent:   #2b3d3b; /* Dark Green — tabs, focus, interactive */
-    --good:           #0ca30c;
-    --warning:        #fab219;
-    --serious:        #ec835a;
-    --critical:       #d03b3b;
-    --success-text:   #006300;
+    --surface-page: #f3ece6;
+    --surface-1: #ffffff;
+    --surface-2: #ece3db;
+    --text-primary: #152022;
+    --text-secondary: #43514f;
+    --text-muted: #727272;
+    --gridline: #ddd3c8;
+    --baseline: #c9bdb0;
+    --border: #ddd3c8;
+    --series-1: #6d889d;
+    --series-2: #2b3d3b;
+    --series-3: #91b7ac;
+    --brand-accent: #6d889d;
+    --good: #2f7a52;
+    --warning: #9a6b1f;
+    --serious: #b4452c;
+    --critical: #a3302a;
+    --success-text: #1f6e45;
+    --chip-bg: #ffffff;
+    --shadow: 0 1px 2px rgba(21,32,34,0.06), 0 1px 1px rgba(21,32,34,0.04);
   }
+
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) {
-      color-scheme: dark;
-      --surface-1:      #1b2422;
-      --surface-page:   #101716;
-      --text-primary:   #f3ece6;
-      --text-secondary: #c6cdc9;
-      --text-muted:     #8b9694;
-      --gridline:       #2b3634;
-      --baseline:       #3d4a47;
-      --border:         rgba(243,236,230,0.14);
-      --series-1:       #7fa89a;
-      --series-2:       #8fb0c4;
-      --series-3:       #a9cbc0;
-      --brand-accent:   #7fa89a;
-      --good:           #0ca30c;
-      --warning:        #fab219;
-      --serious:        #ec835a;
-      --critical:       #e66767;
-      --success-text:   #0ca30c;
+      --surface-page: #101716;
+      --surface-1: #182221;
+      --surface-2: #1f2b29;
+      --text-primary: #f3ece6;
+      --text-secondary: #c7beb4;
+      --text-muted: #9aa29f;
+      --gridline: #30403d;
+      --baseline: #3b4c48;
+      --border: #30403d;
+      --series-1: #9dbcd0;
+      --series-2: #91b7ac;
+      --series-3: #6d889d;
+      --brand-accent: #9dbcd0;
+      --good: #5fcf8e;
+      --warning: #e3b85c;
+      --serious: #f08a6c;
+      --critical: #ef6b63;
+      --success-text: #5fcf8e;
+      --chip-bg: #1f2b29;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
     }
   }
+
   :root[data-theme="dark"] {
-    color-scheme: dark;
-    --surface-1:      #1b2422;
-    --surface-page:   #101716;
-    --text-primary:   #f3ece6;
-    --text-secondary: #c6cdc9;
-    --text-muted:     #8b9694;
-    --gridline:       #2b3634;
-    --baseline:       #3d4a47;
-    --border:         rgba(243,236,230,0.14);
-    --series-1:       #7fa89a;
-    --series-2:       #8fb0c4;
-    --series-3:       #a9cbc0;
-    --brand-accent:   #7fa89a;
-    --good:           #0ca30c;
-    --warning:        #fab219;
-    --serious:        #ec835a;
-    --critical:       #e66767;
-    --success-text:   #0ca30c;
+    --surface-page: #101716;
+    --surface-1: #182221;
+    --surface-2: #1f2b29;
+    --text-primary: #f3ece6;
+    --text-secondary: #c7beb4;
+    --text-muted: #9aa29f;
+    --gridline: #30403d;
+    --baseline: #3b4c48;
+    --border: #30403d;
+    --series-1: #9dbcd0;
+    --series-2: #91b7ac;
+    --series-3: #6d889d;
+    --brand-accent: #9dbcd0;
+    --good: #5fcf8e;
+    --warning: #e3b85c;
+    --serious: #f08a6c;
+    --critical: #ef6b63;
+    --success-text: #5fcf8e;
+    --chip-bg: #1f2b29;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 1px rgba(0,0,0,0.2);
   }
 
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    font-family: 'Manrope', system-ui, -apple-system, "Segoe UI", sans-serif;
     background: var(--surface-page);
     color: var(--text-primary);
   }
-  .viz-root { background: var(--surface-page); min-height: 100vh; }
-  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+  body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+  }
+  .viz-root { background: var(--surface-page); min-height: 100vh; padding-bottom: 48px; }
 
-  /* Fixed dark-charcoal-on-cream, deliberately not theme-reactive — this is
-     the brand bar, always Vidos Dark Charcoal + Light Cream regardless of
-     whether the report body is in light or dark mode. */
   .brand-band {
     background: #152022; color: #f3ece6;
-    padding: 18px 20px; margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
   }
-  .brand-band-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 10px; }
-  .brand-mark { display: flex; align-items: flex-end; gap: 3px; flex-shrink: 0; color: #f3ece6; }
-  .brand-mark svg { display: block; }
-  .brand-wordmark {
-    font-weight: 800; font-size: 15px; letter-spacing: 0.16em; color: #f3ece6;
-  }
-
-  header.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin: 24px 0 8px; flex-wrap: wrap; }
-  header.top h1 { font-size: 22px; margin: 0 0 4px; font-weight: 800; letter-spacing: -0.01em; }
-  header.top p.sub { margin: 0; color: var(--text-secondary); font-size: 13.5px; }
+  .brand-mark { display: flex; align-items: center; gap: 10px; }
+  .brand-mark svg { width: 26px; height: 26px; display: block; }
+  .brand-mark .wordmark { font-weight: 800; letter-spacing: 0.14em; font-size: 15px; }
   .theme-toggle {
-    border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
-    font-size: 12.5px; padding: 6px 12px; border-radius: 7px; cursor: pointer;
+    background: transparent; border: 1px solid rgba(243,236,230,0.35); color: #f3ece6;
+    border-radius: 999px; padding: 6px 14px; font-family: inherit; font-size: 12.5px;
+    font-weight: 600; cursor: pointer;
   }
-  .theme-toggle:hover { color: var(--text-primary); }
+  .theme-toggle:hover { background: rgba(243,236,230,0.1); }
 
-  .ai-note { font-size: 12.5px; color: var(--text-muted); margin: 0 0 20px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 28px 24px 0; }
+
+  h1 { font-size: 22px; font-weight: 800; margin: 0 0 4px; color: var(--text-primary); }
+  .subtitle { color: var(--text-secondary); font-size: 14px; margin: 0 0 18px; }
+
   .about-box {
-    font-size: 13px; line-height: 1.55; color: var(--text-secondary);
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
-    padding: 12px 16px; margin: 4px 0 12px;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-left: 3px solid var(--brand-accent);
+    border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: var(--text-secondary);
+    line-height: 1.55; margin-bottom: 22px;
   }
   .about-box strong { color: var(--text-primary); }
 
-  .week-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .week-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .week-nav {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: var(--surface-1); border: 1px solid var(--border); color: var(--text-primary);
+    border-radius: 7px; width: 32px; height: 32px; font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .nav-btn:hover { background: var(--surface-2); }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+  .week-tabs { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
   .week-tab {
-    border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
-    font-size: 13px; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: 600;
+    background: var(--surface-1); border: 1px solid var(--border); color: var(--text-secondary);
+    border-radius: 7px; padding: 7px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
   }
-  .week-tab.active { background: var(--brand-accent); color: var(--surface-page); border-color: var(--brand-accent); }
-  .week-tab .pending-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--warning); margin-left: 6px; }
-  .week-page-btn {
-    border: 1px solid var(--border); background: var(--surface-1); color: var(--text-secondary);
-    font-size: 14px; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-weight: 700;
+  .week-tab:hover { background: var(--surface-2); }
+  .week-tab.active { background: var(--series-2); color: #f3ece6; border-color: var(--series-2); }
+  .week-tab .pending-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--warning); margin-left: 6px;
   }
-  .week-page-btn:disabled { opacity: .35; cursor: default; }
-  .week-page-btn:not(:disabled):hover { color: var(--text-primary); }
-
-  .card {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
-    padding: 18px 20px; margin-bottom: 20px;
-  }
-  .card h2 { font-size: 14.5px; margin: 0 0 14px; font-weight: 700; }
-  .card h2 .muted { color: var(--text-muted); font-weight: 500; font-size: 12.5px; }
 
   .pending-banner {
-    background: var(--surface-1); border: 1px dashed var(--baseline); border-radius: 12px;
-    padding: 30px 20px; text-align: center; color: var(--text-secondary); font-size: 13.5px; margin-bottom: 20px;
+    background: var(--surface-1); border: 1px solid var(--warning); border-left: 3px solid var(--warning);
+    border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;
   }
-  .pending-banner strong { color: var(--text-primary); }
 
-  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-  .stat-tile {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 20px; margin-bottom: 22px; box-shadow: var(--shadow);
   }
-  .stat-tile .label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
-  .stat-tile .value { font-size: 26px; font-weight: 700; font-variant-numeric: proportional-nums; }
-  .stat-tile .value.good { color: var(--success-text); }
-  .stat-tile .value.critical { color: var(--critical); }
-  .stat-tile .note { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  .card h2 { font-size: 15px; font-weight: 700; margin: 0 0 14px; color: var(--text-primary); }
 
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  thead th {
-    text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em;
-    color: var(--text-muted); font-weight: 700; padding: 0 10px 10px; border-bottom: 1px solid var(--gridline);
-  }
-  thead th.center, tbody td.center { text-align: center; }
-  tbody td { padding: 10px; border-bottom: 1px solid var(--gridline); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--gridline); }
+  th { color: var(--text-muted); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; }
   tbody tr:last-child td { border-bottom: none; }
-  tbody td.name { font-weight: 600; }
-  tbody td.name .role-note { display: block; font-weight: 400; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .pct { font-variant-numeric: tabular-nums; font-weight: 700; }
-  .pct-bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .pct-bar-track { flex: 1; height: 6px; border-radius: 3px; background: var(--gridline); overflow: hidden; min-width: 60px; }
-  .pct-bar-fill { height: 100%; border-radius: 3px; }
+  td.num, th.num { text-align: center; }
 
-  .icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 700; }
-  .icon.attended { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
-  .icon.missed { background: color-mix(in srgb, var(--critical) 14%, transparent); color: var(--critical); }
-  .icon.na { color: var(--text-muted); font-size: 14px; }
-  .icon.optional-yes { background: color-mix(in srgb, var(--series-1) 16%, transparent); color: var(--series-1); }
-  .icon.optional-no { color: var(--text-muted); border: 1px dashed var(--baseline); }
-  .icon.pending { color: var(--text-muted); border: 1px dashed var(--baseline); }
-  .icon.not-held { color: var(--text-muted); font-size: 9px; font-weight: 700; border-radius: 4px; width: auto; padding: 0 4px; }
+  .person-name { font-weight: 600; color: var(--text-primary); }
+  .person-note { display: block; font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 1px; }
 
-  .flag-pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
-  .flag-pill.low { background: color-mix(in srgb, var(--critical) 14%, transparent); color: var(--critical); }
-  .flag-pill.full { background: color-mix(in srgb, var(--good) 14%, transparent); color: var(--good); }
+  .icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+  .icon.attended { background: rgba(47,122,82,0.14); color: var(--good); }
+  .icon.missed { background: rgba(164,48,42,0.14); color: var(--critical); }
+  .icon.na { color: var(--text-muted); }
+  .icon.pending { color: var(--warning); }
+  .icon.not-held { color: var(--text-muted); }
+  .icon.bonus { background: rgba(145,183,172,0.18); color: var(--success-text); }
+  .icon.optional-no { color: var(--text-muted); }
+  .icon.not-on-team { color: var(--text-muted); }
 
-  .legend-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; color: var(--text-secondary); margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gridline); }
-  .legend-row .item { display: flex; align-items: center; gap: 6px; }
+  .pct-pill {
+    display: inline-block; padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 12.5px;
+  }
+  .pct-high { background: rgba(47,122,82,0.14); color: var(--good); }
+  .pct-mid { background: rgba(154,107,31,0.16); color: var(--warning); }
+  .pct-low { background: rgba(164,48,42,0.14); color: var(--critical); }
+  .pct-pending { background: var(--surface-2); color: var(--text-muted); }
 
-  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
-  .axis-label { fill: var(--text-muted); font-size: 10.5px; }
-  .grid-line { stroke: var(--gridline); stroke-width: 1; }
-  .tooltip { position: absolute; background: var(--text-primary); color: var(--surface-1); font-size: 12px; padding: 6px 10px; border-radius: 6px; pointer-events: none; opacity: 0; transition: opacity .1s; white-space: nowrap; z-index: 5; }
+  .flag-mark { color: var(--warning); font-weight: 800; cursor: help; margin-left: 2px; }
 
-  .all-time-note { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 10px; }
-  .table-scroll { overflow-x: auto; }
+  .chart-wrap { display: flex; align-items: flex-end; gap: 26px; }
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--text-secondary); margin-top: 10px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 2px; }
+
+  .month-divider { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; padding-top: 14px !important; }
 
   footer.info {
-    margin-top: 24px; font-size: 12.5px; color: var(--text-secondary); background: var(--surface-1);
-    border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; line-height: 1.6;
+    font-size: 12px; color: var(--text-muted); line-height: 1.6; padding: 0 2px 30px;
+    border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px;
   }
-  footer.info strong { color: var(--text-primary); }
+  footer.info strong { color: var(--text-secondary); }
 
-  @media (max-width: 820px) { .stat-row { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 640px) {
+    .wrap { padding: 20px 14px 0; }
+    table { font-size: 12px; }
+    th, td { padding: 6px 6px; }
+  }
 </style>
 </head>
 <body>
 <div class="viz-root">
-
   <div class="brand-band">
-    <div class="brand-band-inner">
-      <span class="brand-mark" aria-hidden="true">
-        <svg width="17" height="20" viewBox="0 0 34 40"><polygon points="0,0 11,0 20,32 14,40" fill="currentColor"/></svg>
-        <svg width="8" height="9" viewBox="0 0 16 18" style="margin-bottom:11px;"><polygon points="0,0 16,0 8,18" fill="currentColor"/></svg>
-      </span>
-      <span class="brand-wordmark">VIDOS</span>
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="2,3 9,3 12,19" fill="#f3ece6"/>
+        <polygon points="22,3 15,3 12,19" fill="#9dbcd0"/>
+      </svg>
+      <span class="wordmark">VIDOS</span>
     </div>
+    <button class="theme-toggle" id="themeToggle" type="button">Toggle theme</button>
   </div>
 
-<div class="wrap">
+  <div class="wrap">
+    <h1>Weekly Attendance Report</h1>
+    <p class="subtitle">Team Coordination &middot; Content &amp; Marketing &middot; AI Training</p>
 
-  <header class="top">
-    <div>
-      <h1>Vidos Solutions — Team Meeting Attendance</h1>
-      <p class="sub">Team Coordination · Content &amp; Marketing · AI Training — tracked weekly, Mon–Fri</p>
+    <div class="about-box">
+      <strong>What this is:</strong> weekly attendance for the Vidos team across our three recurring meetings. Pick a week above to see who attended what; percentages are based only on the meetings each person is required to attend. Icon meanings are listed under the weekly table below, and the bottom section shows all-time and month-by-month attendance per person.
     </div>
-    <button class="theme-toggle" id="themeToggle">Toggle dark mode</button>
-  </header>
 
-  <div class="about-box">
-    <strong>What this is:</strong> weekly attendance for the Vidos team across our three recurring meetings. Pick a week above to see who attended what; percentages are based only on the meetings each person is required to attend. Icon meanings are listed under the weekly table below, and the bottom section shows all-time and month-by-month attendance per person.
+    <div class="week-nav">
+      <button class="nav-btn" id="prevWeek" type="button">&#8249;</button>
+      <div class="week-tabs" id="weekTabs"></div>
+      <button class="nav-btn" id="nextWeek" type="button">&#8250;</button>
+    </div>
+
+    <div id="pendingBannerHost"></div>
+
+    <div class="card">
+      <h2 id="reportTitle">Weekly report</h2>
+      <div style="overflow-x:auto;">
+        <table id="reportTable"></table>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="icon attended" style="width:16px;height:16px;">&#10003;</span> Attended</div>
+        <div class="legend-item"><span class="icon missed" style="width:16px;height:16px;">&#10005;</span> Missed</div>
+        <div class="legend-item"><span class="icon bonus" style="width:16px;height:16px;">&#9733;</span> Attended (optional, bonus)</div>
+        <div class="legend-item"><span class="icon optional-no" style="width:16px;height:16px;">&#8212;</span> Optional &ndash; not attended</div>
+        <div class="legend-item"><span class="icon na" style="width:16px;height:16px;">&#8212;</span> Not invited</div>
+        <div class="legend-item"><span class="icon pending" style="width:16px;height:16px;">&#8230;</span> Awaiting update</div>
+        <div class="legend-item"><span class="flag-mark">&#8225;</span> Flagged &ndash; needs confirmation</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Meeting attendance this week</h2>
+      <div id="meetingChart"></div>
+    </div>
+
+    <div class="card">
+      <h2>All-time &amp; monthly attendance</h2>
+      <div style="overflow-x:auto;">
+        <table id="allTimeTable"></table>
+      </div>
+    </div>
+
+    <footer class="info">
+      <strong>Micah Stennett &amp; Maryam Abdulsalam</strong> &mdash; not on the Content &amp; Marketing invite, shown as &ldquo;&mdash;&rdquo;.
+      <strong>Reece Raymond</strong> &mdash; not on the AI Training invite, shown as &ldquo;&mdash;&rdquo;.
+      <strong>Optional for Content &amp; Marketing:</strong> Oli Greenhalgh, Reece Raymond.
+      <strong>Optional for AI Training:</strong> Maryam Abdulsalam.
+      For optional meetings, attending shows as a bonus star and never lowers the score; missing never counts against them. Everyone else is required at all three meetings.
+      <strong>Malaika Taylor-Lewis</strong> left the team after Sep 14–18 — she no longer appears in the weekly report from Sep 21–25 onward, but stays in the all-time record below.
+    </footer>
   </div>
-  <p class="ai-note">AI Training begins Sep 3, 2026 — shown as "n/h" (not held) before then.</p>
-
-  <div class="week-nav">
-    <button class="week-page-btn" id="weekPrev" title="Earlier weeks">‹</button>
-    <div class="week-tabs" id="weekTabs"></div>
-    <button class="week-page-btn" id="weekNext" title="Later weeks">›</button>
-  </div>
-
-  <div id="pendingBanner"></div>
-
-  <div class="stat-row" id="statRow"></div>
-
-  <div class="card">
-    <h2>Attendance rate by meeting <span class="muted" id="meetingChartWeekLabel"></span></h2>
-    <div style="position:relative; max-width:460px;">
-      <svg id="meetingChart" viewBox="0 0 380 220" width="100%" height="220"></svg>
-      <div class="tooltip" id="meetingTooltip"></div>
-    </div>
-    <div class="legend-row">
-      <span class="item"><span class="icon" style="width:14px;height:14px;background:var(--series-1);">&nbsp;</span> Team Coordination</span>
-      <span class="item"><span class="icon" style="width:14px;height:14px;background:var(--series-2);">&nbsp;</span> Content &amp; Marketing</span>
-      <span class="item"><span class="icon" style="width:14px;height:14px;background:var(--series-3);">&nbsp;</span> AI Training</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2 id="reportTitle">Weekly report</h2>
-    <div class="table-scroll">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th class="center">Team Coordination</th>
-          <th class="center">Content &amp; Marketing</th>
-          <th class="center">AI Training</th>
-          <th style="width:150px;">Weekly attendance</th>
-        </tr>
-      </thead>
-      <tbody id="reportBody"></tbody>
-    </table>
-    </div>
-    <div class="legend-row">
-      <span class="item"><span class="icon attended">✓</span> Attended</span>
-      <span class="item"><span class="icon missed">✗</span> Missed</span>
-      <span class="item"><span class="icon na">—</span> Not invited to this meeting</span>
-      <span class="item"><span class="icon optional-yes">★</span> Optional — attended (bonus)</span>
-      <span class="item"><span class="icon optional-no">○</span> Optional — did not attend</span>
-      <span class="item"><span class="icon pending">⋯</span> Meeting not yet logged</span>
-      <span class="item"><span class="icon not-held">n/h</span> Meeting not held that week</span>
-      <span class="item" style="color:var(--warning);">‡ needs confirmation — see note</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>All-time &amp; monthly attendance <span class="muted">— across all completed weeks, lowest first</span></h2>
-    <div class="all-time-note">Anyone under 70% is flagged for a quick check-in. This view is what to scan before 1:1s.</div>
-    <div class="table-scroll">
-    <table>
-      <thead><tr id="allTimeHeadRow"></tr></thead>
-      <tbody id="allTimeBody"></tbody>
-    </table>
-    </div>
-  </div>
-
-  <footer class="info">
-    <strong>Micah Stennett</strong> — Team Coordination only, not on the Content &amp; Marketing invite. <strong>Optional for AI Training:</strong> Micah Stennett, Oli Greenhalgh, Maryam Abdulsalam. Everyone else is required at all three meetings once AI Training starts (Sep 3).
-  </footer>
-
-</div>
 </div>
 
 <script>
-// ============================================================
-// DATA — this is the section Claude edits each week to log
-// attendance.
-//
-// ELIGIBILITY sets who is required / optional / not-invited at
-// each meeting. Raw attendance below only ever needs to record
-// 'attended' | 'missed' | 'pending' — eligibility (and whether a
-// meeting was held at all that week) is applied on top of it.
-// ============================================================
 const PEOPLE = [
-  { id: 'peter',   name: 'Peter Adeleye',        note: '' },
-  { id: 'hope',    name: 'Hope Danniells',       note: '' },
-  { id: 'mary',    name: 'Mary Mugo',            note: '' },
-  { id: 'oli',     name: 'Oli Greenhalgh',       note: 'AI Training optional' },
-  { id: 'malaika', name: 'Malaika Taylor-Lewis', note: '' },
-  { id: 'lukman',  name: 'Lukman Abdulssalam',   note: '' },
-  { id: 'joshua',  name: 'Joshua Noel',          note: '' },
-  { id: 'micah',   name: 'Micah Stennett',       note: 'Team Coordination only · AI Training optional' },
-  { id: 'maryam',  name: 'Maryam Abdulsalam',    note: 'AI Training optional' },
+  { id: 'peter',      name: 'Peter Adeleye' },
+  { id: 'hope',       name: 'Hope Danniells' },
+  { id: 'hopemurray', name: 'Hope Murray-Golas' },
+  { id: 'mary',       name: 'Mary Mugo' },
+  { id: 'oli',        name: 'Oli Greenhalgh', note: 'Content & Marketing optional' },
+  { id: 'malaika',    name: 'Malaika Taylor-Lewis' },
+  { id: 'lukman',     name: 'Lukman Abdulssalam' },
+  { id: 'joshua',     name: 'Joshua Noel' },
+  { id: 'micah',      name: 'Micah Stennett', note: 'Not on Content & Marketing invite' },
+  { id: 'maryam',     name: 'Maryam Abdulsalam', note: 'Not on Content & Marketing invite · AI Training optional' },
+  { id: 'reece',      name: 'Reece Raymond', note: 'Content & Marketing optional · not on AI Training invite' },
 ];
+
+// People added to the team from w3 (the first week of September) onward.
+// Weeks before that show them as "not yet on the team" rather than missed.
+const ACTIVE_FROM = { hopemurray: 'w3', reece: 'w3' };
+// Malaika left the team after Sep 14–18 (w5) — excluded from w6 onward.
+const ACTIVE_UNTIL = { malaika: 'w5' };
 
 const MEETINGS = [
   { key: 'tc', label: 'Team Coordination' },
@@ -331,46 +297,40 @@ const MEETINGS = [
   { key: 'ai', label: 'AI Training' },
 ];
 
-// 'required' | 'optional' | 'na'
 const ELIGIBILITY = {
-  peter:   { tc: 'required', cm: 'required', ai: 'required' },
-  hope:    { tc: 'required', cm: 'required', ai: 'required' },
-  mary:    { tc: 'required', cm: 'required', ai: 'required' },
-  oli:     { tc: 'required', cm: 'required', ai: 'optional' },
-  malaika: { tc: 'required', cm: 'required', ai: 'required' },
-  lukman:  { tc: 'required', cm: 'required', ai: 'required' },
-  joshua:  { tc: 'required', cm: 'required', ai: 'required' },
-  micah:   { tc: 'required', cm: 'na',       ai: 'optional' },
-  maryam:  { tc: 'required', cm: 'required', ai: 'optional' },
+  peter:      { tc: 'required', cm: 'required', ai: 'required' },
+  hope:       { tc: 'required', cm: 'required', ai: 'required' },
+  hopemurray: { tc: 'required', cm: 'required', ai: 'required' },
+  mary:       { tc: 'required', cm: 'required', ai: 'required' },
+  oli:        { tc: 'required', cm: 'optional', ai: 'required' },
+  malaika:    { tc: 'required', cm: 'required', ai: 'required' },
+  lukman:     { tc: 'required', cm: 'required', ai: 'required' },
+  joshua:     { tc: 'required', cm: 'required', ai: 'required' },
+  micah:      { tc: 'required', cm: 'na',       ai: 'required' },
+  maryam:     { tc: 'required', cm: 'na',       ai: 'optional' },
+  reece:      { tc: 'required', cm: 'optional', ai: 'na' },
 };
 
-// raw status per person per meeting: 'attended' | 'missed' | 'pending'
-// (omit the 'ai' key entirely for weeks before AI Training starts — it's
-// forced to "not held" via each week's notHeld list regardless)
 const WEEKS = [
   {
     id: 'w1', label: 'Aug 17–21', range: 'Aug 17–21, 2026', month: 'August 2026', status: 'complete',
-    notHeld: ['ai'], // AI Training doesn't start until Sep 3 — excluded from this week's %, not counted as a miss
+    notHeld: ['ai'],
     attendance: {
       peter:   { tc: 'attended', cm: 'attended' },
       hope:    { tc: 'attended', cm: 'attended' },
       mary:    { tc: 'attended', cm: 'attended' },
-      oli:     { tc: 'attended', cm: 'missed'   },
+      oli:     { tc: 'attended', cm: 'attended' },
       malaika: { tc: 'attended', cm: 'attended' },
       lukman:  { tc: 'attended', cm: 'attended' },
       joshua:  { tc: 'attended', cm: 'attended' },
-      micah:   { tc: 'missed',   cm: 'attended' }, // cm ignored — Micah is 'na' for Content & Marketing
-      maryam:  { tc: 'pending',  cm: 'pending'  }, // no data for this week — added to the team afterward
+      micah:   { tc: 'attended' },
+      maryam:  {},
     },
-    // Discrepancy between the checkbox and the written note on the submitted form —
-    // flagged in the report rather than silently guessed at.
-    flags: {
-      lukman: { cm: 'Checkbox marked attended, but the written note said "missed, with apology" — confirm which is correct.' }
-    }
+    flags: { lukman: { cm: 'Checkbox marked attended, but the written note said "missed, with apology" — confirm which is correct.' } },
   },
   {
     id: 'w2', label: 'Aug 24–28', range: 'Aug 24–28, 2026', month: 'August 2026', status: 'complete',
-    notHeld: ['ai'], // still before Sep 3
+    notHeld: ['ai'],
     attendance: {
       peter:   { tc: 'attended', cm: 'attended' },
       hope:    { tc: 'missed',   cm: 'missed'   },
@@ -379,246 +339,278 @@ const WEEKS = [
       malaika: { tc: 'missed',   cm: 'attended' },
       lukman:  { tc: 'attended', cm: 'missed'   },
       joshua:  { tc: 'attended', cm: 'attended' },
-      micah:   { tc: 'missed',   cm: 'attended' }, // cm ignored — Micah is 'na' for Content & Marketing
-      maryam:  { tc: 'pending',  cm: 'pending'  }, // not on this week's submitted checklist — no data
+      micah:   { tc: 'missed' },
+      maryam:  {},
     },
-    // The written summary line only named Lukman and Oli as CM misses, but the
-    // checkbox for Hope was also left unticked for Content & Marketing — flagged
-    // rather than silently dropped.
+    flags: { hope: { cm: 'Checkbox left unticked for Content & Marketing, but the written summary only listed Lukman and Oli as missed — confirm whether Hope attended.' } },
+  },
+  {
+    id: 'w3', label: 'Aug 31–Sep 4', range: 'Aug 31 – Sep 4, 2026', month: 'September 2026', status: 'complete',
+    notHeld: ['cm', 'ai'],
+    attendance: {
+      peter:      { tc: 'attended' },
+      hope:       { tc: 'attended' },
+      hopemurray: { tc: 'missed'   },
+      mary:       { tc: 'attended' },
+      oli:        { tc: 'missed'   },
+      malaika:    { tc: 'attended' },
+      lukman:     { tc: 'missed'   },
+      joshua:     { tc: 'attended' },
+      micah:      { tc: 'missed'   },
+      maryam:     { tc: 'missed'   },
+      reece:      { tc: 'missed'   },
+    },
+  },
+  {
+    id: 'w4', label: 'Sep 7–11', range: 'Sep 7–11, 2026', month: 'September 2026', status: 'complete',
+    attendance: {
+      peter:      { tc: 'attended', cm: 'attended', ai: 'attended' },
+      hope:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      hopemurray: { tc: 'missed',   cm: 'attended', ai: 'missed'   },
+      mary:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      oli:        { tc: 'attended', cm: 'missed',   ai: 'attended' },
+      malaika:    { tc: 'attended', cm: 'attended', ai: 'attended' },
+      lukman:     { tc: 'attended', cm: 'attended', ai: 'attended' },
+      joshua:     { tc: 'attended', cm: 'attended', ai: 'attended' },
+      micah:      { tc: 'attended', ai: 'attended' },
+      maryam:     { tc: 'missed',   ai: 'missed'   },
+      reece:      { tc: 'missed',   cm: 'missed'   },
+    },
+  },
+  {
+    id: 'w5', label: 'Sep 14–18', range: 'Sep 14–18, 2026', month: 'September 2026', status: 'complete',
+    attendance: {
+      peter:      { tc: 'missed',   cm: 'missed',   ai: 'missed'   },
+      hope:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      hopemurray: { tc: 'attended', cm: 'attended', ai: 'attended' },
+      mary:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      oli:        { tc: 'missed',   cm: 'missed',   ai: 'attended' },
+      malaika:    { tc: 'attended', cm: 'attended', ai: 'missed'   },
+      lukman:     { tc: 'missed',   cm: 'attended', ai: 'missed'   },
+      joshua:     { tc: 'attended', cm: 'attended', ai: 'attended' },
+      micah:      { tc: 'missed',   ai: 'missed'   },
+      maryam:     { tc: 'missed',   ai: 'missed'   },
+      reece:      { tc: 'missed',   cm: 'missed'   },
+    },
+  },
+  {
+    id: 'w6', label: 'Sep 21–25', range: 'Sep 21–25, 2026', month: 'September 2026', status: 'complete',
+    notHeld: ['cm'],
+    attendance: {
+      peter:      { tc: 'missed',   ai: 'missed'   },
+      hope:       { tc: 'attended', ai: 'attended' },
+      hopemurray: { tc: 'attended', ai: 'attended' },
+      mary:       { tc: 'missed',   ai: 'missed'   },
+      oli:        { tc: 'missed',   ai: 'attended' },
+      lukman:     { tc: 'attended', ai: 'missed'   },
+      joshua:     { tc: 'attended', ai: 'attended' },
+      micah:      { tc: 'attended', ai: 'missed'   },
+      maryam:     { tc: 'missed',   ai: 'missed'   },
+      reece:      { tc: 'missed' },
+    },
+  },
+  {
+    id: 'w7', label: 'Sep 28–Oct 2', range: 'Sep 28 – Oct 2, 2026', month: 'September/October 2026', status: 'complete',
+    restrictedInvite: { cm: ['peter', 'hope', 'hopemurray', 'mary'] },
+    attendance: {
+      peter:      { tc: 'missed',   cm: 'attended', ai: 'attended' },
+      hope:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      hopemurray: { tc: 'missed',   cm: 'attended', ai: 'attended' },
+      mary:       { tc: 'attended', cm: 'attended', ai: 'attended' },
+      oli:        { tc: 'missed',   ai: 'attended' },
+      lukman:     { tc: 'missed',   ai: 'missed'   },
+      joshua:     { tc: 'missed',   ai: 'attended' },
+      micah:      { tc: 'missed',   ai: 'missed'   },
+      maryam:     { tc: 'missed',   ai: 'missed'   },
+      reece:      { tc: 'missed' },
+    },
     flags: {
-      hope: { cm: 'Checkbox left unticked for Content & Marketing, but the written summary only listed Lukman and Oli as missed — confirm whether Hope attended.' }
-    }
-  },
-  {
-    id: 'w3', label: 'Aug 31–Sep 4', range: 'Aug 31–Sep 4, 2026', month: 'September 2026', status: 'pending',
-    // AI Training starts Sep 3, which falls inside this week — no notHeld override
-    attendance: {
-      peter:   { tc: 'pending', cm: 'pending', ai: 'pending' },
-      hope:    { tc: 'pending', cm: 'pending', ai: 'pending' },
-      mary:    { tc: 'pending', cm: 'pending', ai: 'pending' },
-      oli:     { tc: 'pending', cm: 'pending', ai: 'pending' },
-      malaika: { tc: 'pending', cm: 'pending', ai: 'pending' },
-      lukman:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-      joshua:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-      micah:   { tc: 'pending', cm: 'pending', ai: 'pending' },
-      maryam:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-    }
-  },
-  {
-    id: 'w4', label: 'Sep 7–11', range: 'Sep 7–11, 2026', month: 'September 2026', status: 'pending',
-    attendance: {
-      peter:   { tc: 'pending', cm: 'pending', ai: 'pending' },
-      hope:    { tc: 'pending', cm: 'pending', ai: 'pending' },
-      mary:    { tc: 'pending', cm: 'pending', ai: 'pending' },
-      oli:     { tc: 'pending', cm: 'pending', ai: 'pending' },
-      malaika: { tc: 'pending', cm: 'pending', ai: 'pending' },
-      lukman:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-      joshua:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-      micah:   { tc: 'pending', cm: 'pending', ai: 'pending' },
-      maryam:  { tc: 'pending', cm: 'pending', ai: 'pending' },
-    }
+      lukman: { cm: 'Content & Marketing invite was reduced to 4 people this week per the submitted report — Lukman wasn\'t on this week\'s invite, not counted as missed.' },
+      joshua: { cm: 'Content & Marketing invite was reduced to 4 people this week per the submitted report — Joshua wasn\'t on this week\'s invite, not counted as missed.' },
+      oli:    { cm: 'Content & Marketing invite was reduced to 4 people this week per the submitted report — Oli wasn\'t on this week\'s invite, not counted as missed.' },
+      reece:  { cm: 'Content & Marketing invite was reduced to 4 people this week per the submitted report — Reece wasn\'t on this week\'s invite, not counted as missed.' },
+    },
   },
 ];
-// ============================================================
-// END DATA
-// ============================================================
 
-const WEEK_WINDOW_SIZE = 4;
-let weekWindowStart = Math.max(0, WEEKS.length - WEEK_WINDOW_SIZE);
+const weekIndexById = {};
+WEEKS.forEach((w, i) => { weekIndexById[w.id] = i; });
 
-let currentWeekIndex = (() => {
-  for (let i = WEEKS.length - 1; i >= 0; i--) if (WEEKS[i].status === 'complete') return i;
-  return 0;
-})();
-
-const EXCLUDED_STATUSES = ['na', 'optional-yes', 'optional-no', 'not-held'];
-
-function meetingNotHeldForWeek(meetingKey, weekIdx) {
-  const week = WEEKS[weekIdx];
-  return !!(week.notHeld && week.notHeld.includes(meetingKey));
+function isOnTeam(personId, weekIdx) {
+  const from = ACTIVE_FROM[personId];
+  if (from && weekIdx < weekIndexById[from]) return false;
+  const until = ACTIVE_UNTIL[personId];
+  if (until && weekIdx > weekIndexById[until]) return false;
+  return true;
 }
 
-// Combines eligibility + whether the meeting was held that week + the raw
-// logged outcome into the single status the rest of the page renders from.
+function invitedThisWeek(personId, meetingKey, weekIdx) {
+  const week = WEEKS[weekIdx];
+  if (week.restrictedInvite && week.restrictedInvite[meetingKey]) {
+    return week.restrictedInvite[meetingKey].includes(personId);
+  }
+  return true;
+}
+
 function displayStatus(personId, meetingKey, weekIdx) {
   const elig = ELIGIBILITY[personId][meetingKey];
   if (elig === 'na') return 'na';
-  if (meetingNotHeldForWeek(meetingKey, weekIdx)) return 'not-held';
-  const raw = (WEEKS[weekIdx].attendance[personId] || {})[meetingKey] || 'pending';
-  if (raw === 'pending') return 'pending';
-  if (elig === 'optional') return raw === 'attended' ? 'optional-yes' : 'optional-no';
-  return raw; // required: 'attended' or 'missed'
-}
-
-function visibleWeekIndices() {
-  const end = Math.min(WEEKS.length, weekWindowStart + WEEK_WINDOW_SIZE);
-  const arr = [];
-  for (let i = weekWindowStart; i < end; i++) arr.push(i);
-  return arr;
+  if (!isOnTeam(personId, weekIdx)) return 'not-on-team';
+  const week = WEEKS[weekIdx];
+  if (week.notHeld && week.notHeld.includes(meetingKey)) return 'not-held';
+  if (!invitedThisWeek(personId, meetingKey, weekIdx)) return 'na';
+  const raw = (week.attendance[personId] || {})[meetingKey];
+  if (!raw || raw === 'pending') return 'pending';
+  if (elig === 'optional') {
+    return raw === 'attended' ? 'bonus' : 'optional-no';
+  }
+  return raw; // 'attended' | 'missed'
 }
 
 function personWeekPct(personId, weekIdx) {
-  let requiredCount = 0, attendedCount = 0, pendingCount = 0, applicable = 0;
+  let requiredCount = 0, attended = 0, pendingCount = 0, applicable = 0;
+  if (!isOnTeam(personId, weekIdx)) return { pct: null, hasPending: false, applicable: 0 };
   MEETINGS.forEach(m => {
-    const status = displayStatus(personId, m.key, weekIdx);
-    if (EXCLUDED_STATUSES.includes(status)) return;
+    const elig = ELIGIBILITY[personId][m.key];
+    if (elig === 'na') return;
+    const week = WEEKS[weekIdx];
+    if (week.notHeld && week.notHeld.includes(m.key)) return;
+    if (!invitedThisWeek(personId, m.key, weekIdx)) return;
+    if (elig === 'optional') return; // doesn't count toward required %, bonus only
     applicable++;
-    if (status === 'pending') { pendingCount++; return; }
+    const raw = (week.attendance[personId] || {})[m.key];
+    if (!raw || raw === 'pending') { pendingCount++; return; }
     requiredCount++;
-    if (status === 'attended') attendedCount++;
+    if (raw === 'attended') attended++;
   });
-  if (applicable === 0) return null; // nothing applicable at all this week
-  if (requiredCount === 0) return { pct: null, hasPending: true, required: 0, attended: 0 };
-  return { pct: Math.round((attendedCount / requiredCount) * 100), hasPending: pendingCount > 0, required: requiredCount, attended: attendedCount };
+  if (applicable === 0) return { pct: null, hasPending: false, applicable: 0 };
+  if (requiredCount === 0 && pendingCount > 0) return { pct: null, hasPending: true, applicable };
+  const pct = requiredCount > 0 ? Math.round((attended / requiredCount) * 100) : null;
+  return { pct, hasPending: pendingCount > 0, applicable };
 }
 
-function meetingRateForWeek(meetingKey, weekIdx) {
-  let required = 0, attended = 0;
-  PEOPLE.forEach(p => {
-    const status = displayStatus(p.id, meetingKey, weekIdx);
-    if (EXCLUDED_STATUSES.includes(status) || status === 'pending') return;
-    required++;
-    if (status === 'attended') attended++;
-  });
-  if (required === 0) return null;
-  return Math.round((attended / required) * 100);
+function pctClass(pct) {
+  if (pct === null) return 'pct-pending';
+  if (pct >= 90) return 'pct-high';
+  if (pct >= 70) return 'pct-mid';
+  return 'pct-low';
 }
 
-function pctColor(pct) {
-  if (pct === null || pct === undefined) return 'var(--text-muted)';
-  if (pct >= 90) return 'var(--good)';
-  if (pct >= 70) return 'var(--text-primary)';
-  return 'var(--critical)';
-}
+const ICONS = {
+  attended: '&#10003;', missed: '&#10005;', na: '&#8212;', pending: '&#8230;',
+  'not-held': '&#8212;', bonus: '&#9733;', 'optional-no': '&#8212;', 'not-on-team': '&#8212;',
+};
 
-function iconFor(status) {
-  switch (status) {
-    case 'attended': return '<span class="icon attended">✓</span>';
-    case 'missed': return '<span class="icon missed">✗</span>';
-    case 'na': return '<span class="icon na">—</span>';
-    case 'optional-yes': return '<span class="icon optional-yes">★</span>';
-    case 'optional-no': return '<span class="icon optional-no">○</span>';
-    case 'pending': return '<span class="icon pending">⋯</span>';
-    case 'not-held': return '<span class="icon not-held" title="Meeting not held this week">n/h</span>';
-    default: return '';
-  }
-}
+let currentWindowStart = Math.max(0, WEEKS.length - 4);
+let activeWeekIdx = WEEKS.length - 1;
+const root = document.documentElement;
+let themeOverride = null;
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (themeOverride === null) themeOverride = prefersDark ? 'light' : 'dark';
+  else themeOverride = themeOverride === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', themeOverride);
+});
 
 function renderWeekTabs() {
-  const visible = visibleWeekIndices();
-  const el = document.getElementById('weekTabs');
-  el.innerHTML = visible.map(i => {
-    const w = WEEKS[i];
-    return `
-      <button class="week-tab ${i === currentWeekIndex ? 'active' : ''}" data-idx="${i}">
-        ${w.label}${w.status === 'pending' ? '<span class="pending-dot"></span>' : ''}
-      </button>
-    `;
-  }).join('');
-  el.querySelectorAll('.week-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentWeekIndex = parseInt(btn.dataset.idx, 10);
-      renderAll();
-    });
+  const host = document.getElementById('weekTabs');
+  host.innerHTML = '';
+  const visible = WEEKS.slice(currentWindowStart, currentWindowStart + 4);
+  visible.forEach((w) => {
+    const idx = weekIndexById[w.id];
+    const btn = document.createElement('button');
+    btn.className = 'week-tab' + (idx === activeWeekIdx ? ' active' : '');
+    btn.type = 'button';
+    btn.innerHTML = w.label + (w.status === 'pending' ? '<span class="pending-dot"></span>' : '');
+    btn.addEventListener('click', () => { activeWeekIdx = idx; renderAll(); });
+    host.appendChild(btn);
   });
-
-  const maxStart = Math.max(0, WEEKS.length - WEEK_WINDOW_SIZE);
-  document.getElementById('weekPrev').disabled = weekWindowStart <= 0;
-  document.getElementById('weekNext').disabled = weekWindowStart >= maxStart;
+  document.getElementById('prevWeek').disabled = currentWindowStart <= 0;
+  document.getElementById('nextWeek').disabled = currentWindowStart + 4 >= WEEKS.length;
 }
 
-function shiftWeekWindow(delta) {
-  const maxStart = Math.max(0, WEEKS.length - WEEK_WINDOW_SIZE);
-  weekWindowStart = Math.min(maxStart, Math.max(0, weekWindowStart + delta));
-  const visible = visibleWeekIndices();
-  if (!visible.includes(currentWeekIndex)) {
-    currentWeekIndex = visible[visible.length - 1];
-  }
-  renderAll();
-}
+document.getElementById('prevWeek').addEventListener('click', () => {
+  currentWindowStart = Math.max(0, currentWindowStart - 1);
+  renderWeekTabs();
+});
+document.getElementById('nextWeek').addEventListener('click', () => {
+  currentWindowStart = Math.min(WEEKS.length - 4, currentWindowStart + 1);
+  renderWeekTabs();
+});
 
 function renderPendingBanner() {
-  const el = document.getElementById('pendingBanner');
-  const week = WEEKS[currentWeekIndex];
+  const host = document.getElementById('pendingBannerHost');
+  const week = WEEKS[activeWeekIdx];
   if (week.status === 'pending') {
-    el.innerHTML = `<div class="pending-banner">Week of <strong>${week.range}</strong> is in progress — meetings haven't all been logged yet. Tell Claude the results as they happen and this report will fill in.</div>`;
+    host.innerHTML = '<div class="pending-banner">This week hasn\'t been reported yet — send the filled checklist and the tracker will be updated.</div>';
   } else {
-    el.innerHTML = '';
+    host.innerHTML = '';
   }
-}
-
-function renderStatRow() {
-  const el = document.getElementById('statRow');
-  const week = WEEKS[currentWeekIndex];
-
-  const results = PEOPLE.map(p => personWeekPct(p.id, currentWeekIndex));
-  const known = results.filter(r => r && !r.hasPending);
-  const avg = known.length ? Math.round(known.reduce((a, r) => a + r.pct, 0) / known.length) : null;
-
-  const fullAttendance = known.filter(r => r.pct === 100).length;
-  const flagged = known.filter(r => r.pct < 70).length;
-  const meetingsHeld = MEETINGS.filter(m => meetingRateForWeek(m.key, currentWeekIndex) !== null).length;
-
-  el.innerHTML = `
-    <div class="stat-tile">
-      <div class="label">Team average</div>
-      <div class="value ${avg === null ? '' : (avg >= 90 ? 'good' : (avg < 70 ? 'critical' : ''))}">${avg === null ? '—' : avg + '%'}</div>
-      <div class="note">${week.status === 'pending' ? 'updates as meetings are logged' : `across all ${PEOPLE.length} people`}</div>
-    </div>
-    <div class="stat-tile">
-      <div class="label">Meetings held</div>
-      <div class="value">${meetingsHeld} / 3</div>
-      <div class="note">this week</div>
-    </div>
-    <div class="stat-tile">
-      <div class="label">Full attendance</div>
-      <div class="value good">${fullAttendance}</div>
-      <div class="note">people at 100%</div>
-    </div>
-    <div class="stat-tile">
-      <div class="label">Flagged (&lt;70%)</div>
-      <div class="value ${flagged > 0 ? 'critical' : ''}">${flagged}</div>
-      <div class="note">worth a check-in</div>
-    </div>
-  `;
 }
 
 function renderReportTable() {
-  const week = WEEKS[currentWeekIndex];
-  document.getElementById('reportTitle').innerHTML = `Weekly report <span class="muted">— ${week.range}</span>`;
-  const body = document.getElementById('reportBody');
-  body.innerHTML = PEOPLE.map(p => {
-    const cells = MEETINGS.map(m => {
-      const status = displayStatus(p.id, m.key, currentWeekIndex);
-      const flagNote = week.flags && week.flags[p.id] && week.flags[p.id][m.key];
-      const flagHtml = flagNote ? `<span title="${flagNote.replace(/"/g, '&quot;')}" style="color:var(--warning); font-weight:700; cursor:help; margin-left:3px;">‡</span>` : '';
-      return `<td class="center">${iconFor(status)}${flagHtml}</td>`;
-    }).join('');
-    const r = personWeekPct(p.id, currentWeekIndex);
-    let pctHtml;
-    if (!r) {
-      pctHtml = `<span class="pct" style="color:var(--text-muted);">n/a</span>`;
-    } else if (r.hasPending) {
-      pctHtml = `<span class="pct" style="color:var(--text-muted);">pending</span>`;
+  const week = WEEKS[activeWeekIdx];
+  document.getElementById('reportTitle').textContent = 'Weekly report — ' + week.range;
+  const table = document.getElementById('reportTable');
+  let html = '<thead><tr><th>Team member</th>';
+  MEETINGS.forEach(m => html += `<th class="num">${m.label}</th>`);
+  html += '<th class="num">Week %</th></tr></thead><tbody>';
+  PEOPLE.filter(p => isOnTeam(p.id, activeWeekIdx)).forEach(p => {
+    html += `<tr><td><span class="person-name">${p.name}</span>${p.note ? `<span class="person-note">${p.note}</span>` : ''}</td>`;
+    MEETINGS.forEach(m => {
+      const status = displayStatus(p.id, m.key, activeWeekIdx);
+      const flag = (week.flags && week.flags[p.id] && week.flags[p.id][m.key]) ? week.flags[p.id][m.key] : null;
+      html += `<td class="num"><span class="icon ${status}">${ICONS[status]}</span>${flag ? `<span class="flag-mark" title="${flag.replace(/"/g,'&quot;')}">&#8225;</span>` : ''}</td>`;
+    });
+    const r = personWeekPct(p.id, activeWeekIdx);
+    const label = r.pct === null ? (r.hasPending ? '…' : '—') : r.pct + '%';
+    html += `<td class="num"><span class="pct-pill ${pctClass(r.pct)}">${label}</span></td></tr>`;
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function meetingRateForWeek(meetingKey, weekIdx) {
+  const week = WEEKS[weekIdx];
+  if (week.notHeld && week.notHeld.includes(meetingKey)) return null;
+  let total = 0, attended = 0;
+  PEOPLE.forEach(p => {
+    const elig = ELIGIBILITY[p.id][meetingKey];
+    if (elig === 'na' || !isOnTeam(p.id, weekIdx)) return;
+    if (!invitedThisWeek(p.id, meetingKey, weekIdx)) return;
+    const raw = (week.attendance[p.id] || {})[meetingKey];
+    if (!raw || raw === 'pending') return;
+    total++;
+    if (raw === 'attended') attended++;
+  });
+  if (total === 0) return null;
+  return Math.round((attended / total) * 100);
+}
+
+function renderMeetingChart() {
+  const host = document.getElementById('meetingChart');
+  const colors = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
+  let bars = '', legend = '';
+  const barW = 64, gap = 40, chartH = 140;
+  let svg = `<svg viewBox="0 0 ${MEETINGS.length * (barW + gap)} ${chartH + 40}" width="100%" style="max-width:420px;height:auto;">`;
+  MEETINGS.forEach((m, i) => {
+    const rate = meetingRateForWeek(m.key, activeWeekIdx);
+    const x = i * (barW + gap) + gap / 2;
+    const h = rate === null ? 0 : (rate / 100) * chartH;
+    const y = chartH - h;
+    svg += `<line x1="${x}" y1="${chartH}" x2="${x + barW}" y2="${chartH}" stroke="var(--baseline)" stroke-width="1"/>`;
+    if (rate !== null) {
+      svg += `<rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="4" fill="${colors[i]}"/>`;
+      svg += `<text x="${x + barW/2}" y="${y - 8}" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text-primary)" font-family="Manrope">${rate}%</text>`;
     } else {
-      const color = pctColor(r.pct);
-      const flag = r.pct === 100 ? '<span class="flag-pill full">full attendance</span>' : (r.pct < 70 ? '<span class="flag-pill low">low</span>' : '');
-      pctHtml = `
-        <div class="pct-bar-wrap">
-          <span class="pct" style="color:${color}; min-width:38px;">${r.pct}%</span>
-          <div class="pct-bar-track"><div class="pct-bar-fill" style="width:${r.pct}%; background:${color};"></div></div>
-        </div>
-        ${flag}
-      `;
+      svg += `<text x="${x + barW/2}" y="${chartH/2}" text-anchor="middle" font-size="11" fill="var(--text-muted)" font-family="Manrope">not held</text>`;
     }
-    return `
-      <tr>
-        <td class="name">${p.name}${p.note ? `<span class="role-note">${p.note}</span>` : ''}</td>
-        ${cells}
-        <td>${pctHtml}</td>
-      </tr>
-    `;
-  }).join('');
+    svg += `<text x="${x + barW/2}" y="${chartH + 20}" text-anchor="middle" font-size="11" fill="var(--text-secondary)" font-family="Manrope">${m.label}</text>`;
+    legend += `<div class="legend-item"><span class="legend-swatch" style="background:${colors[i]}"></span>${m.label}</div>`;
+  });
+  svg += '</svg>';
+  host.innerHTML = `<div class="chart-wrap">${svg}</div><div class="legend">${legend}</div>`;
 }
 
 function distinctMonths() {
@@ -627,133 +619,44 @@ function distinctMonths() {
   return seen;
 }
 
-function renderAllTimeTable() {
-  const completedIdx = WEEKS.map((w, i) => i).filter(i => WEEKS[i].status === 'complete');
-  const months = distinctMonths();
-
-  const headRow = document.getElementById('allTimeHeadRow');
-  headRow.innerHTML = `
-    <th>Name</th>
-    <th style="width:190px;">All-time attendance</th>
-    ${months.map(m => `<th class="center" style="width:110px;">${m}</th>`).join('')}
-    <th class="center">Full-attendance weeks</th>
-    <th class="center">Flag</th>
-  `;
-
-  const body = document.getElementById('allTimeBody');
-  if (!completedIdx.length) {
-    body.innerHTML = `<tr><td colspan="${4 + months.length}" style="color:var(--text-muted);">No completed weeks yet.</td></tr>`;
-    return;
-  }
-
-  const avgOf = (idxList, personId) => {
-    const pcts = idxList
-      .map(i => personWeekPct(personId, i))
-      .filter(r => r && !r.hasPending)
-      .map(r => r.pct);
-    return pcts.length ? { avg: Math.round(pcts.reduce((a, b) => a + b, 0) / pcts.length), weeks: pcts.length } : { avg: null, weeks: 0 };
-  };
-
-  const rows = PEOPLE.map(p => {
-    const overall = avgOf(completedIdx, p.id);
-    const fullWeeks = completedIdx.filter(i => {
-      const r = personWeekPct(p.id, i);
-      return r && !r.hasPending && r.pct === 100;
-    }).length;
-    const monthly = months.map(month => avgOf(completedIdx.filter(i => WEEKS[i].month === month), p.id));
-    return { name: p.name, note: p.note, avg: overall.avg, weeksCounted: overall.weeks, fullWeeks, monthly };
-  }).sort((a, b) => (a.avg ?? 999) - (b.avg ?? 999));
-
-  body.innerHTML = rows.map(r => {
-    const color = pctColor(r.avg);
-    return `
-      <tr>
-        <td class="name">${r.name}${r.note ? `<span class="role-note">${r.note}</span>` : ''}</td>
-        <td>
-          <div class="pct-bar-wrap">
-            <span class="pct" style="color:${color}; min-width:38px;">${r.avg === null ? '—' : r.avg + '%'}</span>
-            <div class="pct-bar-track"><div class="pct-bar-fill" style="width:${r.avg ?? 0}%; background:${color};"></div></div>
-          </div>
-        </td>
-        ${r.monthly.map(m => `<td class="center" style="color:${pctColor(m.avg)}; font-weight:700;">${m.avg === null ? '—' : m.avg + '%'}</td>`).join('')}
-        <td class="center">${r.fullWeeks} / ${r.weeksCounted}</td>
-        <td class="center">${r.avg !== null && r.avg < 70 ? '<span class="flag-pill low">follow up</span>' : ''}</td>
-      </tr>
-    `;
-  }).join('');
+function avgOf(values) {
+  const nums = values.filter(v => v.pct !== null).map(v => v.pct);
+  if (nums.length === 0) return null;
+  return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
 }
 
-function renderMeetingChart() {
-  document.getElementById('meetingChartWeekLabel').textContent = `— ${WEEKS[currentWeekIndex].range}`;
-  const svg = document.getElementById('meetingChart');
-  const tooltip = document.getElementById('meetingTooltip');
-  const W = 380, H = 220, padL = 30, padR = 10, padT = 16, padB = 34;
-  const plotW = W - padL - padR, plotH = H - padT - padB;
-  const colors = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
-
-  const data = MEETINGS.map(m => ({
-    label: m.label,
-    rate: meetingRateForWeek(m.key, currentWeekIndex),
-    notHeld: meetingNotHeldForWeek(m.key, currentWeekIndex)
-  }));
-  const barW = plotW / data.length * 0.5;
-  const gap = plotW / data.length;
-
-  let gridSvg = '';
-  [0, 50, 100].forEach(v => {
-    const yy = padT + plotH - (v / 100) * plotH;
-    gridSvg += `<line class="grid-line" x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}" />`;
-    gridSvg += `<text class="axis-label" x="${padL - 6}" y="${yy + 3}" text-anchor="end">${v}</text>`;
-  });
-
-  let bars = '';
-  data.forEach((d, i) => {
-    const cx = padL + gap * i + gap / 2;
-    const val = d.rate ?? 0;
-    const barH = (val / 100) * plotH;
-    const yTop = padT + plotH - barH;
-    const naLabel = d.notHeld ? 'not held' : (d.rate === null ? 'pending' : 'n/a');
-    bars += `<rect class="meeting-bar" data-label="${d.label}" data-val="${d.rate === null ? naLabel : d.rate + '%'}"
-      x="${(cx - barW / 2).toFixed(1)}" y="${yTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${Math.max(barH, 1).toFixed(1)}"
-      rx="4" fill="${colors[i]}" style="cursor:pointer;" />`;
-    bars += `<text class="axis-label" x="${cx}" y="${H - 16}" text-anchor="middle">${d.label.split(' ')[0]}</text>`;
-    if (d.rate !== null) {
-      bars += `<text x="${cx}" y="${(yTop - 6).toFixed(1)}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text-primary)">${d.rate}%</text>`;
-    } else {
-      bars += `<text x="${cx}" y="${(padT + plotH - 6).toFixed(1)}" text-anchor="middle" font-size="11" fill="var(--text-muted)">${naLabel}</text>`;
-    }
-  });
-
-  svg.innerHTML = gridSvg + bars;
-
-  svg.querySelectorAll('.meeting-bar').forEach(bar => {
-    bar.addEventListener('mouseenter', () => {
-      const rect = svg.getBoundingClientRect();
-      tooltip.textContent = `${bar.dataset.label}: ${bar.dataset.val}`;
-      tooltip.style.left = (parseFloat(bar.getAttribute('x')) / W * rect.width) + 'px';
-      tooltip.style.top = (parseFloat(bar.getAttribute('y')) / H * rect.height - 24) + 'px';
-      tooltip.style.opacity = 1;
+function renderAllTimeTable() {
+  const months = distinctMonths();
+  const table = document.getElementById('allTimeTable');
+  let html = '<thead><tr><th>Team member</th><th class="num">All-time %</th><th class="num">Full-attendance weeks</th>';
+  months.forEach(m => html += `<th class="num month-divider" style="padding-top:8px;">${m}</th>`);
+  html += '</tr></thead><tbody>';
+  PEOPLE.forEach(p => {
+    const allWeeks = WEEKS.map((w, i) => personWeekPct(p.id, i)).filter(r => r.applicable > 0);
+    const allTime = avgOf(allWeeks);
+    const fullWeeks = allWeeks.filter(r => r.pct === 100).length;
+    html += `<tr><td><span class="person-name">${p.name}</span></td>`;
+    html += `<td class="num"><span class="pct-pill ${pctClass(allTime)}">${allTime === null ? '—' : allTime + '%'}</span></td>`;
+    html += `<td class="num">${fullWeeks}</td>`;
+    months.forEach(month => {
+      const idxs = WEEKS.map((w, i) => w.month === month ? i : -1).filter(i => i >= 0);
+      const results = idxs.map(i => personWeekPct(p.id, i)).filter(r => r.applicable > 0);
+      const pct = avgOf(results);
+      html += `<td class="num">${pct === null ? '—' : pct + '%'}</td>`;
     });
-    bar.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
+    html += '</tr>';
   });
+  html += '</tbody>';
+  table.innerHTML = html;
 }
 
 function renderAll() {
   renderWeekTabs();
   renderPendingBanner();
-  renderStatRow();
   renderReportTable();
-  renderAllTimeTable();
   renderMeetingChart();
+  renderAllTimeTable();
 }
-
-document.getElementById('themeToggle').addEventListener('click', () => {
-  const root = document.documentElement;
-  const current = root.getAttribute('data-theme');
-  root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-});
-document.getElementById('weekPrev').addEventListener('click', () => shiftWeekWindow(-1));
-document.getElementById('weekNext').addEventListener('click', () => shiftWeekWindow(1));
 
 renderAll();
 </script>
